@@ -1,0 +1,26 @@
+- name: Deploy application
+  hosts: app
+  tasks:
+
+
+  - name: Stop Tomcat
+    command: sudo  /usr/sbin/service tomcat8 stop
+
+
+  - name: Clean artifact path
+    file:
+     state: absent
+     path: /opt/tomcat8/{{ serv_name }}/*
+
+
+  - name: Extract WAR into /opt/tomcat8/{{ serv_name }}/
+    unarchive:
+     src:  /{{ war_path }}/
+     dest: /opt/tomcat8/{{ serv_name }}/
+
+
+  - name: Start Tomcat
+    command: sudo /usr/sbin/service tomcat8 start
+
+
+
